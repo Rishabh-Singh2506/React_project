@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10x10 LED Matrix</title>
+    <style>
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-template-rows: repeat(10, 30px);
+            gap: 2px;
+        }
+        .cell {
+            width: 30px;
+            height: 30px;
+            background-color: #ddd;
+            border: 1px solid #aaa;
+        }
+        .cell.on {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>10x10 LED Matrix</h1>
+    <div id="matrix" class="matrix"></div>
+    <br>
+    <input type="text" id="positions" placeholder="Enter positions (e.g., 1,2; 4,5)">
+    <button onclick="turnOnLEDs()">Turn On LEDs</button>
+
+    <script>
+        function createMatrix() {
+            const matrixElement = document.getElementById('matrix');
+            matrixElement.innerHTML = ''; // Clear any previous matrix
+            for (let i = 0; i < 10; i++) {
+                for (let j = 0; j < 10; j++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.id = `cell-${i}-${j}`;
+                    matrixElement.appendChild(cell);
+                }
+            }
+        }
+
+        function turnOnLEDs() {
+            // Clear any previously turned on LEDs
+            //const allCells = document.querySelectorAll('.cell');
+            //allCells.forEach(cell => cell.classList.remove('on'));
+
+            // Get user input
+            const positionsInput = document.getElementById('positions').value;
+            const positionsArray = positionsInput.split(';');
+
+            // Turn on LEDs at specified positions
+            positionsArray.forEach(position => {
+                const [row, col] = position.split(',').map(Number);
+                if (row >= 1 && row <= 10 && col >= 1 && col <= 10) {
+                    document.getElementById(`cell-${row - 1}-${col - 1}`).classList.add('on');
+                } else {
+                    alert(`Invalid position: (${row}, ${col})`);
+                }
+            });
+        }
+
+        // Initialize the matrix when the page loads
+        window.onload = createMatrix;
+    </script>
+</body>
+</html>
